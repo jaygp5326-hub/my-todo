@@ -916,8 +916,8 @@ function loginScreen(msg){
       '<button class="primary wide" type="button" id="lg-in">登入</button><button class="btn-ghost" type="button" id="lg-up" style="min-height:44px">建立帳號</button></div>';
     document.body.appendChild(box);
     const m=box.querySelector("#lg-msg"),em=()=>box.querySelector("#lg-email").value.trim(),pw=()=>box.querySelector("#lg-pw").value;
-    box.querySelector("#lg-in").onclick=async()=>{m.textContent="登入中…";const r=await sb.auth.signInWithPassword({email:em(),password:pw()});if(r.error){m.textContent="登入失敗："+(r.error.message.indexOf("confirm")>=0?"請先到信箱點確認連結":"Email 或密碼不對");return}box.remove();resolve(r.data.session)};
-    box.querySelector("#lg-up").onclick=async()=>{m.textContent="建立中…";const r=await sb.auth.signUp({email:em(),password:pw()});if(r.error){m.textContent="建立失敗："+r.error.message;return}if(r.data.session){box.remove();resolve(r.data.session)}else m.textContent="已寄出確認信。到信箱點連結後，回到這裡按「登入」。"};
+    box.querySelector("#lg-in").onclick=async()=>{m.textContent="登入中…";const r=await sb.auth.signInWithPassword({email:em(),password:pw()});if(r.error){m.textContent=r.error.message.indexOf("confirm")>=0?"帳號還沒確認，跟 Claude 說一聲，或到信箱點確認連結。":"登入失敗：Email 或密碼不對。第一次使用請先按下面的「建立帳號」。";return}box.remove();resolve(r.data.session)};
+    box.querySelector("#lg-up").onclick=async()=>{m.textContent="建立中…";const r=await sb.auth.signUp({email:em(),password:pw()});if(r.error){m.textContent="建立失敗："+r.error.message;return}if(r.data.session){box.remove();resolve(r.data.session)}else m.textContent="帳號建立好了。跟 Claude 說一聲「建好了」，確認後就能按「登入」。"};
   });
 }
 async function connectDb(){
