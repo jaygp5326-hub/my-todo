@@ -35,6 +35,7 @@
   --warn-bg:#544A2A;--warn-ink:#FBE6AC;--shadow:0 1px 3px rgba(0,0,0,.18);color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
+html{background:var(--bg)}
 body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;margin:0;overflow:hidden}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -54,7 +55,7 @@ header.top .gutter{padding-block:12px 10px;display:flex;flex-direction:column;ga
 .pager::-webkit-scrollbar{display:none}
 .panel{flex:0 0 100%;width:100%;overflow-y:auto;scroll-snap-align:start;scroll-snap-stop:always;-webkit-overflow-scrolling:touch}
 .panel .gutter{padding-block:6px 40px;display:flex;flex-direction:column;gap:24px}
-.tabbar{flex:none;display:flex;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tabbar{flex:none;display:flex;background:var(--bg);border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 .tab{flex:1;border:0;background:none;min-height:54px;font-size:15px;font-weight:500;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .tab::after{content:"";width:22px;height:3px;border-radius:3px;background:transparent}
 .tab.on{color:var(--accent);font-weight:700}
@@ -70,7 +71,7 @@ section{display:flex;flex-direction:column;gap:8px}
 .list{display:flex;flex-direction:column;gap:8px;min-height:8px;border-radius:14px}
 .list.dropping{outline:2px dashed var(--accent);outline-offset:4px}
 .row{background:var(--surface);border-radius:14px;padding:12px 12px 12px 10px;display:flex;align-items:center;gap:12px;min-height:54px;box-shadow:var(--shadow)}
-.check{width:28px;height:28px;border-radius:9px;border:2px solid #B9C2BC;background:transparent;flex-shrink:0;display:grid;place-items:center;padding:0}
+.check{width:28px;height:28px;border-radius:9px;border:2px solid color-mix(in srgb,var(--muted) 60%,var(--bg));background:transparent;flex-shrink:0;display:grid;place-items:center;padding:0}
 .check svg{width:16px;height:16px;stroke:var(--accent-ink);stroke-width:3;fill:none;opacity:0}
 .body{flex:1;min-width:0;text-align:left;background:none;border:0;padding:2px 0;display:flex;align-items:center;gap:8px}
 .title{font-size:16px;font-weight:500;line-height:1.45;overflow-wrap:anywhere}
@@ -125,6 +126,23 @@ details.fold .row{box-shadow:none;background:var(--bg)}
 .chips.sm{gap:6px}
 .chips.sm .chipbtn{font-size:13px;padding:4px 11px;min-height:32px}
 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.palbtn{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 14px;min-height:52px;text-align:left}
+.palbtn .dots{display:flex;gap:4px}.palbtn .dots i{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.palgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pal{border:0;padding:0;background:none;text-align:left;display:flex;flex-direction:column;gap:6px;border-radius:16px}
+.palcard{border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:7px;box-shadow:0 0 0 1px rgba(127,127,127,.25);position:relative;overflow:hidden}
+.pal.on .palcard{box-shadow:0 0 0 3px var(--accent),0 0 0 5px var(--bg)}
+.palcard .pd{font-family:var(--num);font-weight:700;font-size:13px;letter-spacing:.06em}
+.palcard .pq{height:20px;border-radius:8px;display:flex;align-items:center;gap:4px;padding:0 6px}
+.palcard .pq i{height:5px;flex:1;border-radius:3px}
+.palcard .pr{border-radius:9px;padding:6px 7px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.palcard .pr b{width:12px;height:12px;border-radius:4px;border:1.5px solid;flex-shrink:0}
+.palcard .pr s{text-decoration:none;font-size:10px;margin-left:auto;font-weight:400}
+.palcard .pb{display:flex;gap:6px;align-items:center}
+.palcard .pb span{border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+.palcard .pt{height:18px;margin:2px -10px -10px;display:flex;justify-content:space-around;align-items:center;font-size:9px}
+.palname{font-size:14px;font-weight:700;display:flex;justify-content:space-between;padding:0 2px}
+.palname small{font-weight:400;color:var(--muted)}
 .danger{border:0;background:transparent;color:var(--hard);font-weight:700;padding:8px 0;text-align:left}
 .rv{background:var(--surface);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
 .rv .title{font-weight:700}
@@ -195,9 +213,10 @@ details.fold .row{box-shadow:none;background:var(--bg)}
 .cday.on{background:var(--accent);color:var(--accent-ink)}
 .calclear{border:0;background:none;color:var(--hard);font-weight:700;font-size:14px;padding:8px 2px 0;min-height:36px}
 /* daily quest */
-.quest{background:radial-gradient(130% 90% at 50% 0%,#3E7A66 0%,#2A4C41 55%,#243F36 100%);color:#EEF6F1;border-radius:22px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(13,22,19,.28)}
+.quest{background:radial-gradient(130% 90% at 50% 0%,color-mix(in srgb,var(--accent) 42%,#1B2124) 0%,color-mix(in srgb,var(--accent) 20%,#171C1F) 55%,color-mix(in srgb,var(--accent) 12%,#13171A) 100%);color:#EEF6F1;border-radius:22px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 30px rgba(13,22,19,.28)}
 .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.qeye{font-family:var(--num);font-weight:700;letter-spacing:.24em;font-size:12px;color:#7FD9B0}
+.qeye{font-family:var(--num);font-weight:700;letter-spacing:.24em;font-size:12px;color:color-mix(in srgb,var(--accent) 70%,#fff)}
+.login .qeye{color:var(--accent)}
 .qtitle{margin:2px 0 0;font-size:24px;font-weight:900;color:#fff}
 .qstreak{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.07);border-radius:14px;padding:6px 12px;min-width:64px}
 .qstreak b{font-family:var(--num);font-size:26px;line-height:1;color:#FFD25A}
@@ -234,7 +253,7 @@ details.fold .row{box-shadow:none;background:var(--bg)}
 .quest.clear .qringwrap{animation:qpop .5s ease-out}
 @keyframes qpop{0%{transform:scale(.94)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.quest.clear .qringwrap{animation:none}.qseg{transition:none}}
-.row.questrow{border:0;width:100%;text-align:left;background:linear-gradient(90deg,#3B6E5E,#2E5447);color:#EEF6F1;border-left:4px solid #B58CFF}
+.row.questrow{border:0;width:100%;text-align:left;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 38%,#1F2528),color-mix(in srgb,var(--accent) 20%,#1B2023));color:#EEF6F1;border-left:4px solid #B58CFF}
 .row.questrow .title{font-weight:700;color:#fff}
 .row.questrow .sd{color:#B9CCC2}
 .row.questrow .qmini .qtrack{stroke:rgba(255,255,255,.12)}
@@ -251,7 +270,6 @@ details.fold .row{box-shadow:none;background:var(--bg)}
 #home .grip svg{display:none}
 .lp-float{transform:scale(1.03);box-shadow:0 14px 34px rgba(0,0,0,.35);transition:none!important;color:var(--ink)}
 :root[data-theme="dark"]{--st-ok:#3FBF85;--st-stuck:#E5A13A;--st-todo:#7F8C85}
-:root[data-theme="dark"] .check{border-color:#8E9B94}
 /* compact home: more rows on one screen */
 .addbar input{padding:9px 12px;min-height:42px}
 .addbar button{min-height:42px;padding:0 14px}
@@ -318,7 +336,6 @@ header.top .gutter{padding-block:8px 8px;gap:8px}
 <script>
 (function(){
 "use strict";
-document.documentElement.setAttribute("data-theme","dark");
 const AREAS_DEFAULT=["協會","自媒體","初階班","商業合作","贊助","私人課","生活","家人與伴侶"];
 const BUCKETS=[["inbox","待分類"],["today","今天"],["tomorrow","明天"],["week","這週"],["month","本月目標"],["later","以後再說"],["goal","長期目標"]];
 const WD=["日","一","二","三","四","五","六"];
@@ -570,6 +587,59 @@ function areasHTML(){
   if(none)h+='<button class="acard dim" type="button" data-act="goarea" data-k="none"><span class="an">還沒選領域</span><span class="ac">'+none+' 件</span></button>';
   return h+'</div>';
 }
+/* ---------- palettes (配色) ---------- */
+const PALETTES=[
+ ["forest","森林夜",1,"#1F2925","#2A3631","#EEF3F0","#A7B5AD","#3A4842","#33403A","#5BD8A0","#2C4A3E","#0F1F18","#FF9F66"],
+ ["graphite","石墨",1,"#1C1C1E","#2C2C2E","#F2F2F7","#A1A1A8","#3A3A3C","#333336","#0A84FF","#1E3550","#FFFFFF","#FF9F0A"],
+ ["midnight","午夜藍",1,"#141B2D","#1E2740","#E8EDF8","#9AA6C2","#2E3A57","#253050","#7AA2FF","#26365E","#0B1226","#FFB86B"],
+ ["aurora","極光紫",1,"#1D1A2B","#29253C","#EFEBFA","#ABA3C7","#3A3452","#312C47","#B49BFF","#3A3160","#160F2E","#FF8FA3"],
+ ["espresso","咖啡",1,"#241E1A","#312923","#F3ECE4","#BCAE9F","#463B33","#3A312A","#E0A96D","#4A3826","#23170C","#FF8A65"],
+ ["ocean","深海",1,"#0F2326","#183236","#E6F4F3","#96B9B7","#26474B","#1F3B3F","#3CD3C1","#1C4A49","#04201E","#FFB454"],
+ ["wine","酒紅",1,"#24161B","#321F26","#F7E9EC","#C3A2AC","#4A2E38","#3B262E","#FF7A93","#4F2433","#2A0710","#FFC266"],
+ ["oled","純黑",1,"#000000","#141414","#FFFFFF","#9E9E9E","#262626","#1C1C1C","#30D158","#0F3A1C","#00210A","#FF9F0A"],
+ ["slate","霧灰",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#8FC1FF","#43546B","#0E1B2C","#FFB37A"],
+ ["olive","橄欖",1,"#22241B","#2E3125","#F0F1E6","#B4B7A0","#424634","#383B2D","#C5D86D","#3E4627","#1A1F05","#FF9D5C"],
+ ["fresh","清新綠",0,"#F7F9F8","#FFFFFF","#1F2723","#66736C","#E1E8E3","#EEF3F0","#1FA36B","#DDF3E8","#FFFFFF","#D9622B"],
+ ["latte","奶茶",0,"#F6F1EA","#FFFCF7","#2E261F","#7D6F62","#E6DCCF","#EFE6DA","#B9733A","#F3E0CC","#FFFFFF","#C2453A"],
+ ["sky","天空藍",0,"#F2F6FB","#FFFFFF","#1B2533","#5F6D80","#DCE4EF","#E8EFF8","#2F6FEB","#DCE7FC","#FFFFFF","#E2683C"],
+ ["lavender","薰衣草",0,"#F5F3FB","#FFFFFF","#262139","#6E6789","#E3DFF0","#EDE9F8","#6C4FE0","#E6E0FB","#FFFFFF","#D9467A"],
+ ["peach","蜜桃",0,"#FFF5F0","#FFFFFF","#33221C","#85675C","#F1DDD3","#FBE9E1","#E2603F","#FCE1D8","#FFFFFF","#B8476B"],
+ ["mint","薄荷",0,"#EFF8F5","#FFFFFF","#17302A","#5A7870","#D3E8E1","#E1F2EC","#0E9F86","#D2F0E8","#FFFFFF","#E07A2F"],
+ ["paper","紙本黑白",0,"#F4F2EE","#FFFFFF","#1A1A1A","#6F6B64","#E2DED6","#ECE9E3","#1A1A1A","#E4E1DA","#FFFFFF","#D2452C"],
+ ["sun","檸檬",0,"#FFFBEA","#FFFFFF","#2B2611","#77704F","#EEE6C4","#FAF2D2","#D9A000","#FBEFC2","#231A00","#D8573A"],
+ ["rose","玫瑰",0,"#FBF3F5","#FFFFFF","#2E1A21","#7F6670","#EFDCE2","#F7E8ED","#C93D6B","#F7DCE5","#FFFFFF","#E07B2F"],
+ ["concrete","水泥橘",0,"#ECEEEF","#FFFFFF","#1E2326","#636C72","#D8DDE0","#E3E7E9","#F26A1B","#FDE3D2","#FFFFFF","#2E7DD7"]
+].map(a=>({id:a[0],name:a[1],dark:!!a[2],bg:a[3],surface:a[4],ink:a[5],muted:a[6],line:a[7],chip:a[8],accent:a[9],soft:a[10],accInk:a[11],hard:a[12]}));
+const palById=id=>PALETTES.find(p=>p.id===id)||PALETTES[0];
+let curPal=null;
+function applyPalette(id){
+  const p=palById(id);curPal=p.id;const r=document.documentElement,st=r.style;
+  const v={bg:p.bg,surface:p.surface,ink:p.ink,muted:p.muted,line:p.line,chip:p.chip,accent:p.accent,"accent-soft":p.soft,"accent-ink":p.accInk,hard:p.hard,
+    "warn-bg":p.dark?"#4D4428":"#FFF4D6","warn-ink":p.dark?"#FBE6AC":"#6E5000",
+    shadow:p.dark?"0 1px 3px rgba(0,0,0,.25)":"0 0 0 1px "+p.line+",0 2px 8px rgba(30,38,34,.05)"};
+  Object.keys(v).forEach(k=>st.setProperty("--"+k,v[k]));
+  st.colorScheme=p.dark?"dark":"light";r.setAttribute("data-theme",p.dark?"dark":"light");
+  const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",p.bg);
+  try{localStorage.setItem("palette",p.id)}catch(e){}
+}
+(function(){let id="forest";try{id=localStorage.getItem("palette")||id}catch(e){}applyPalette(id)})();
+function palCard(p){
+  const on=p.id===curPal;
+  return '<button type="button" class="pal'+(on?' on':'')+'" data-act="palette" data-k="'+p.id+'" aria-pressed="'+on+'">'+
+   '<div class="palcard" style="background:'+p.bg+';color:'+p.ink+'">'+
+    '<div class="pd">11/24 週二</div>'+
+    '<div class="pq" style="background:color-mix(in srgb,'+p.accent+' 30%,#1B2124)"><i style="background:#3FD0FF"></i><i style="background:#FF8A3D"></i><i style="background:rgba(255,255,255,.2)"></i></div>'+
+    '<div class="pr" style="background:'+p.surface+';box-shadow:0 0 0 1px '+p.line+'"><b style="border-color:'+p.muted+'"></b>回覆訊息<s style="color:'+p.muted+'">今天</s></div>'+
+    '<div class="pr" style="background:'+p.surface+';box-shadow:0 0 0 1px '+p.line+'"><b style="border-color:'+p.accent+';background:'+p.accent+'"></b><span style="color:'+p.muted+'">剪第 1 集</span></div>'+
+    '<div class="pb"><span style="background:'+p.accent+';color:'+p.accInk+'">新增</span><span style="background:'+p.soft+';color:'+p.ink+'">協會</span><span style="color:'+p.hard+'">●</span></div>'+
+    '<div class="pt" style="border-top:1px solid '+p.line+';color:'+p.muted+'"><span style="color:'+p.accent+';font-weight:700">首頁</span><span>領域</span><span>提醒</span><span>專案</span></div>'+
+   '</div><div class="palname">'+p.name+'<small>'+(p.dark?'深色':'淺色')+'</small></div></button>';
+}
+function openPalettes(){
+  openSheet(()=>head("配色")+'<p class="hint">點一下馬上套用，會同步到你的其他裝置。</p>'+
+    '<p class="flabel">深色</p><div class="palgrid">'+PALETTES.filter(p=>p.dark).map(palCard).join("")+'</div>'+
+    '<p class="flabel">淺色</p><div class="palgrid">'+PALETTES.filter(p=>!p.dark).map(palCard).join("")+'</div>');
+}
 /* ---------- daily quest (自我提升) ---------- */
 const QUEST=[
   {k:"ai",lv:"01",name:"腦力升級",task:"看一部 AI 學習影片",short:"AI 影片",c:"#3FD0FF"},
@@ -716,11 +786,12 @@ function openReview(){
 }
 function dropReview(id){if(!S.settings)return;setSettings({review:(S.settings.review||[]).filter(x=>x!==id)})}
 function openSettings(){
-  openSheet(()=>head("設定")+
+  openSheet(()=>{const p=palById(curPal);return head("設定")+
+    '<button class="palbtn" type="button" data-act="palettes"><span><b>配色</b>　'+p.name+'</span><span class="dots"><i style="background:'+p.bg+'"></i><i style="background:'+p.surface+'"></i><i style="background:'+p.accent+'"></i><i style="background:'+p.hard+'"></i></span></button>'+
     '<div class="field"><label for="st-areas">領域（一行一個）</label><textarea id="st-areas" rows="8">'+esc(areas().join("\n"))+'</textarea></div>'+
     '<button class="primary" type="button" data-act="saveareas">儲存領域</button>'+
     '<p class="hint">改名不會改到已經標好的事情。</p>'+
-    '<button class="danger" type="button" data-act="logout">登出</button>');
+    '<button class="danger" type="button" data-act="logout">登出</button>'});
 }
 
 /* ---------- events ---------- */
@@ -733,6 +804,8 @@ document.addEventListener("click",e=>{
   if(act==="close"){closeSheet();return}
   if(act==="noop")return;
   if(act==="settings"){openSettings();return}
+  if(act==="palettes"){openPalettes();return}
+  if(act==="palette"){applyPalette(el.dataset.k);S.sheetHTML=null;S.sheetRender&&S.sheetRender();render();setSettings({palette:curPal});return}
   if(act==="pick"){S.pick=S.pick===el.dataset.a?null:el.dataset.a;render();return}
   if(act==="goarea"){S.areaKey=el.dataset.k;render();$("#p-areas").scrollTop=0;return}
   if(act==="areaback"){S.areaKey=null;render();return}
@@ -932,7 +1005,7 @@ async function connectDb(){
   try{db=await connectDb()}catch(e){console.warn(e);$("#home").innerHTML='<div class="empty">讀不到你的清單，請確認網路後重新打開。</div>';return}
   const err=e=>{console.warn(e);$("#home").insertAdjacentHTML("afterbegin",'<div class="banner"><span>同步中斷了，重新整理頁面試試。</span></div>')};
   db.collection("items").onSnapshot(s=>{S.items=new Map(s.docs.map(d=>[d.id,d.data()]));S.ready.i=true;render();maybeRoll()},err);
-  db.doc("meta/settings").onSnapshot(s=>{S.settings=s.exists?s.data():null;S.ready.s=true;render();maybeRoll()},err);
+  db.doc("meta/settings").onSnapshot(s=>{S.settings=s.exists?s.data():null;if(S.settings&&S.settings.palette&&S.settings.palette!==curPal)applyPalette(S.settings.palette);S.ready.s=true;render();maybeRoll()},err);
   db.collection("lines").onSnapshot(s=>{S.lines=new Map(s.docs.map(d=>[d.id,d.data()]));render()},err);
   db.collection("quest").onSnapshot(s=>{S.quest=new Map(s.docs.map(d=>[d.id,d.data()]));render()},err);
   db.collection("projects").onSnapshot(s=>{S.projects=new Map(s.docs.map(d=>[d.id,d.data()]));render()},err);
