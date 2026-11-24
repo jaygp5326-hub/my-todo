@@ -597,7 +597,6 @@ const PALETTES=[
  ["ocean","深海",1,"#0F2326","#183236","#E6F4F3","#96B9B7","#26474B","#1F3B3F","#3CD3C1","#1C4A49","#04201E","#FFB454"],
  ["wine","酒紅",1,"#24161B","#321F26","#F7E9EC","#C3A2AC","#4A2E38","#3B262E","#FF7A93","#4F2433","#2A0710","#FFC266"],
  ["oled","純黑",1,"#000000","#141414","#FFFFFF","#9E9E9E","#262626","#1C1C1C","#30D158","#0F3A1C","#00210A","#FF9F0A"],
- ["slate","霧灰",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#8FC1FF","#43546B","#0E1B2C","#FFB37A"],
  ["olive","橄欖",1,"#22241B","#2E3125","#F0F1E6","#B4B7A0","#424634","#383B2D","#C5D86D","#3E4627","#1A1F05","#FF9D5C"],
  ["fresh","清新綠",0,"#F7F9F8","#FFFFFF","#1F2723","#66736C","#E1E8E3","#EEF3F0","#1FA36B","#DDF3E8","#FFFFFF","#D9622B"],
  ["latte","奶茶",0,"#F6F1EA","#FFFCF7","#2E261F","#7D6F62","#E6DCCF","#EFE6DA","#B9733A","#F3E0CC","#FFFFFF","#C2453A"],
@@ -610,6 +609,19 @@ const PALETTES=[
  ["rose","玫瑰",0,"#FBF3F5","#FFFFFF","#2E1A21","#7F6670","#EFDCE2","#F7E8ED","#C93D6B","#F7DCE5","#FFFFFF","#E07B2F"],
  ["concrete","水泥橘",0,"#ECEEEF","#FFFFFF","#1E2326","#636C72","#D8DDE0","#E3E7E9","#F26A1B","#FDE3D2","#FFFFFF","#2E7DD7"]
 ].map(a=>({id:a[0],name:a[1],dark:!!a[2],bg:a[3],surface:a[4],ink:a[5],muted:a[6],line:a[7],chip:a[8],accent:a[9],soft:a[10],accInk:a[11],hard:a[12]}));
+const FOG=[
+ ["slate","霧灰・天藍",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#8FC1FF","#43546B","#0E1B2C","#FFB37A"],
+ ["fog-mint","霧灰・薄荷",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#7FE0B8","#3F5A52","#0C241B","#FFB37A"],
+ ["fog-coral","霧灰・珊瑚",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#FF9B85","#5E4A4A","#2B0E08","#FFD27A"],
+ ["fog-amber","霧灰・琥珀",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#F5C26B","#5A5240","#2A1E05","#FF8F7A"],
+ ["fog-lav","霧灰・薰衣草",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#B9A8FF","#4E4A6A","#170F33","#FFB37A"],
+ ["fog-rose","霧灰・玫瑰",1,"#3A3F47","#464C55","#F5F6F8","#C1C6CE","#59606B","#50565F","#F59AB8","#5D4652","#2E0A18","#FFC27A"],
+ ["fog-warm","暖霧",1,"#403C39","#4C4743","#F7F4F1","#CBC3BC","#5F5853","#56504B","#E8B07A","#5C4B3B","#2A1A0A","#FF8F7A"],
+ ["fog-cool","冷霧",1,"#36404A","#424D58","#F3F7FA","#BCC7D2","#56636F","#4C5763","#6FD3E6","#3A5662","#05232A","#FFB37A"],
+ ["fog-deep","深霧",1,"#2E3239","#3A3F47","#F5F6F8","#B5BBC4","#4D535C","#444A52","#8FC1FF","#3A4A60","#0E1B2C","#FFB37A"],
+ ["fog-light","淺霧",1,"#4A5059","#565D67","#FAFBFC","#D0D5DC","#6A717C","#5F666F","#A8D4FF","#4F6278","#0E1B2C","#FFC08A"]
+].map(a=>({id:a[0],name:a[1],dark:!!a[2],fog:true,bg:a[3],surface:a[4],ink:a[5],muted:a[6],line:a[7],chip:a[8],accent:a[9],soft:a[10],accInk:a[11],hard:a[12]}));
+PALETTES.unshift(...FOG);
 const palById=id=>PALETTES.find(p=>p.id===id)||PALETTES[0];
 let curPal=null;
 function applyPalette(id){
@@ -633,11 +645,12 @@ function palCard(p){
     '<div class="pr" style="background:'+p.surface+';box-shadow:0 0 0 1px '+p.line+'"><b style="border-color:'+p.accent+';background:'+p.accent+'"></b><span style="color:'+p.muted+'">剪第 1 集</span></div>'+
     '<div class="pb"><span style="background:'+p.accent+';color:'+p.accInk+'">新增</span><span style="background:'+p.soft+';color:'+p.ink+'">協會</span><span style="color:'+p.hard+'">●</span></div>'+
     '<div class="pt" style="border-top:1px solid '+p.line+';color:'+p.muted+'"><span style="color:'+p.accent+';font-weight:700">首頁</span><span>領域</span><span>提醒</span><span>專案</span></div>'+
-   '</div><div class="palname">'+p.name+'<small>'+(p.dark?'深色':'淺色')+'</small></div></button>';
+   '</div><div class="palname">'+p.name+'</div></button>';
 }
 function openPalettes(){
   openSheet(()=>head("配色")+'<p class="hint">點一下馬上套用，會同步到你的其他裝置。</p>'+
-    '<p class="flabel">深色</p><div class="palgrid">'+PALETTES.filter(p=>p.dark).map(palCard).join("")+'</div>'+
+    '<p class="flabel">霧灰系列</p><div class="palgrid">'+FOG.map(palCard).join("")+'</div>'+
+    '<p class="flabel">深色</p><div class="palgrid">'+PALETTES.filter(p=>p.dark&&!p.fog).map(palCard).join("")+'</div>'+
     '<p class="flabel">淺色</p><div class="palgrid">'+PALETTES.filter(p=>!p.dark).map(palCard).join("")+'</div>');
 }
 /* ---------- daily quest (自我提升) ---------- */
