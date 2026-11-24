@@ -587,7 +587,7 @@ function areasHTML(){
   if(none)h+='<button class="acard dim" type="button" data-act="goarea" data-k="none"><span class="an">還沒選領域</span><span class="ac">'+none+' 件</span></button>';
   return h+'</div>';
 }
-const APPVER="11/24-4";
+const APPVER="11/24-5";
 /* ---------- palettes (配色) ---------- */
 const PALETTES=[
  ["forest","森林夜",1,"#1F2925","#2A3631","#EEF3F0","#A7B5AD","#3A4842","#33403A","#5BD8A0","#2C4A3E","#0F1F18","#FF9F66"],
@@ -1052,15 +1052,24 @@ async function connectDb(){
    so the app ends ~47pt above the bottom of the screen. Size the app to the real screen instead. */
 (function(){
   var standalone=window.navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches);
+  if(!standalone)return;
+  /* Measure once when no keyboard is open. Never touch the layout while someone is typing:
+     changing sizes during keyboard open/close made iPhone drop the focus, so nothing could be typed. */
+  var typing=function(){var a=document.activeElement;return a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"||a.isContentEditable)};
+  var last=0;
   function fit(){
+    if(typing())return;
     var app=document.querySelector(".app");if(!app)return;
     var portrait=window.innerWidth<=window.innerHeight;
     var full=portrait?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width);
     var gap=full-window.innerHeight;
-    if(standalone&&gap>0&&gap<=80){app.style.bottom="auto";app.style.height=full+"px";document.documentElement.style.height=full+"px"}
-    else{app.style.bottom="";app.style.height="";document.documentElement.style.height=""}
+    var h=(gap>0&&gap<=80)?full:0;
+    if(h===last)return;last=h;
+    if(h){app.style.bottom="auto";app.style.height=h+"px"}else{app.style.bottom="";app.style.height=""}
   }
-  fit();window.addEventListener("resize",fit);window.addEventListener("orientationchange",function(){setTimeout(fit,300)});
+  fit();
+  window.addEventListener("orientationchange",function(){setTimeout(fit,400)});
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)setTimeout(fit,200)});
 })();
 </script>
 <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
