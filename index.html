@@ -587,6 +587,7 @@ function areasHTML(){
   if(none)h+='<button class="acard dim" type="button" data-act="goarea" data-k="none"><span class="an">還沒選領域</span><span class="ac">'+none+' 件</span></button>';
   return h+'</div>';
 }
+const APPVER="11/24-3";
 /* ---------- palettes (配色) ---------- */
 const PALETTES=[
  ["forest","森林夜",1,"#1F2925","#2A3631","#EEF3F0","#A7B5AD","#3A4842","#33403A","#5BD8A0","#2C4A3E","#0F1F18","#FF9F66"],
@@ -804,7 +805,8 @@ function openSettings(){
     '<div class="field"><label for="st-areas">領域（一行一個）</label><textarea id="st-areas" rows="8">'+esc(areas().join("\n"))+'</textarea></div>'+
     '<button class="primary" type="button" data-act="saveareas">儲存領域</button>'+
     '<p class="hint">改名不會改到已經標好的事情。</p>'+
-    '<button class="danger" type="button" data-act="logout">登出</button>'});
+    '<button class="danger" type="button" data-act="logout">登出</button>'+
+    '<p class="hint" style="font-size:12px">版本 '+APPVER+'　螢幕 '+screen.height+'　可用 '+innerHeight+'　App '+Math.round(document.querySelector(".app").getBoundingClientRect().height)+'　'+(navigator.standalone?'主畫面':'瀏覽器')+'</p>'});
 }
 
 /* ---------- events ---------- */
