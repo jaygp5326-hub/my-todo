@@ -587,7 +587,7 @@ function areasHTML(){
   if(none)h+='<button class="acard dim" type="button" data-act="goarea" data-k="none"><span class="an">還沒選領域</span><span class="ac">'+none+' 件</span></button>';
   return h+'</div>';
 }
-const APPVER="11/24-3";
+const APPVER="11/24-4";
 /* ---------- palettes (配色) ---------- */
 const PALETTES=[
  ["forest","森林夜",1,"#1F2925","#2A3631","#EEF3F0","#A7B5AD","#3A4842","#33403A","#5BD8A0","#2C4A3E","#0F1F18","#FF9F66"],
@@ -997,15 +997,35 @@ function makeDb(){
 function loginScreen(msg){
   return new Promise(resolve=>{
     const box=document.createElement("div");box.className="login";
-    box.innerHTML='<div class="loginbox"><div class="qeye" style="color:var(--accent)">MY TODO</div><h1 class="pagetitle">我的待辦</h1>'+
+    box.innerHTML='<form class="loginbox" id="lg-form" autocomplete="on" novalidate><div class="qeye">MY TODO</div><h1 class="pagetitle">我的待辦</h1>'+
       '<p class="hint" id="lg-msg">'+(msg||'用 Email 和密碼登入。第一次使用請按「建立帳號」。')+'</p>'+
-      '<div class="field"><label for="lg-email">Email</label><input id="lg-email" type="email" autocomplete="username" inputmode="email"></div>'+
-      '<div class="field"><label for="lg-pw">密碼（至少 6 個字）</label><input id="lg-pw" type="password" autocomplete="current-password"></div>'+
-      '<button class="primary wide" type="button" id="lg-in">登入</button><button class="btn-ghost" type="button" id="lg-up" style="min-height:44px">建立帳號</button></div>';
+      '<div class="field"><label for="lg-email">Email</label><input id="lg-email" name="email" type="email" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email"></div>'+
+      '<div class="field"><label for="lg-pw">密碼（至少 6 個字）</label><input id="lg-pw" name="password" type="password" autocomplete="current-password"></div>'+
+      '<button class="primary wide" type="submit" id="lg-in">登入</button><button class="btn-ghost" type="button" id="lg-up" style="min-height:44px">建立帳號</button></form>';
     document.body.appendChild(box);
-    const m=box.querySelector("#lg-msg"),em=()=>box.querySelector("#lg-email").value.trim(),pw=()=>box.querySelector("#lg-pw").value;
-    box.querySelector("#lg-in").onclick=async()=>{m.textContent="登入中…";const r=await sb.auth.signInWithPassword({email:em(),password:pw()});if(r.error){m.textContent=r.error.message.indexOf("confirm")>=0?"帳號還沒確認，跟 Claude 說一聲，或到信箱點確認連結。":"登入失敗：Email 或密碼不對。第一次使用請先按下面的「建立帳號」。";return}box.remove();resolve(r.data.session)};
-    box.querySelector("#lg-up").onclick=async()=>{m.textContent="建立中…";const r=await sb.auth.signUp({email:em(),password:pw()});if(r.error){m.textContent="建立失敗："+r.error.message;return}if(r.data.session){box.remove();resolve(r.data.session)}else m.textContent="帳號建立好了。跟 Claude 說一聲「建好了」，確認後就能按「登入」。"};
+    const form=box.querySelector("form"),m=box.querySelector("#lg-msg"),ie=box.querySelector("#lg-email"),ip=box.querySelector("#lg-pw");
+    /* iPhone password autofill sometimes shows text before the field's value is committed; remember every value we see. */
+    let ev="",pv="";const keep=()=>{if(ie.value)ev=ie.value;if(pv!==ip.value&&ip.value)pv=ip.value};
+    ["input","change","keyup","blur"].forEach(t=>{ie.addEventListener(t,keep);ip.addEventListener(t,keep)});
+    let busy=false;
+    async function read(){if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();await new Promise(r=>setTimeout(r,120));keep();
+      return{email:(ie.value||ev).trim(),password:ip.value||pv}}
+    async function go(kind){
+      if(busy)return;busy=true;
+      try{
+        const c=await read();
+        if(!c.email){m.textContent="Email 是空的。請點 Email 欄位，手動打一次（不要用自動填入）。";return}
+        if(!c.password){m.textContent="密碼是空的。請點密碼欄位，手動打一次。";return}
+        m.textContent=kind==="up"?"建立中…":"登入中…";
+        if(kind==="up"){const r=await sb.auth.signUp(c);if(r.error){m.textContent="建立失敗："+r.error.message;return}if(r.data.session){box.remove();resolve(r.data.session)}else m.textContent="帳號建立好了。跟 Claude 說一聲「建好了」，確認後就能按「登入」。";return}
+        const r=await sb.auth.signInWithPassword(c);
+        if(r.error){m.textContent=r.error.message.indexOf("confirm")>=0?"帳號還沒確認，跟 Claude 說一聲。":"登入失敗：Email 或密碼不對（"+c.email+"）。";return}
+        box.remove();resolve(r.data.session);
+      }catch(e){m.textContent="連不上，請確認網路後再試一次。"}
+      finally{busy=false}
+    }
+    form.addEventListener("submit",e=>{e.preventDefault();e.stopPropagation();go("in")});
+    box.querySelector("#lg-up").addEventListener("click",()=>go("up"));
   });
 }
 async function connectDb(){
