@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>我的待辦</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="待辦">
@@ -40,6 +40,7 @@ html,body{height:100%}
 html{background:var(--bg)}
 body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;margin:0;overflow:hidden}
 button,input,select,textarea{font:inherit;color:inherit}
+input,textarea,select{touch-action:auto;-webkit-user-select:text;user-select:text}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .app{height:100vh;height:100dvh;display:flex;flex-direction:column}
@@ -589,7 +590,7 @@ function areasHTML(){
   if(none)h+='<button class="acard dim" type="button" data-act="goarea" data-k="none"><span class="an">還沒選領域</span><span class="ac">'+none+' 件</span></button>';
   return h+'</div>';
 }
-const APPVER="11/24-7";
+const APPVER="11/24-8";
 /* ---------- palettes (配色) ---------- */
 const PALETTES=[
  ["forest","森林夜",1,"#1F2925","#2A3631","#EEF3F0","#A7B5AD","#3A4842","#33403A","#5BD8A0","#2C4A3E","#0F1F18","#FF9F66"],
